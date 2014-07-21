@@ -11,6 +11,7 @@ pc.script.create('player', function (context) {
 
         this.thrusting = false;
         this.dead = false;
+        this.isOccupied = true;
     };
 
     Player.prototype = {
@@ -40,7 +41,7 @@ pc.script.create('player', function (context) {
         },
 
         update: function (dt) {
-            if (this.dead) {
+            if (this.dead || !this.isOccupied) {
                 return;
             }
 
@@ -59,11 +60,11 @@ pc.script.create('player', function (context) {
             }
 
             // Launch spacesuit
-            if (context.keyboard.isPressed(pc.input.KEY_L)) {
+            if (context.keyboard.wasReleased(pc.input.KEY_L)) {
                 this.launch();
             }
 
-            if (context.keyboard.isPressed(pc.input.KEY_R)) {
+            if (context.keyboard.wasReleased(pc.input.KEY_R)) {
                 this.reset();
             }
         },
@@ -131,7 +132,10 @@ pc.script.create('player', function (context) {
             playerSpaceSuit.setLocalPosition(this.entity.getLocalPosition());
             playerSpaceSuit.translate(0, 2, 0); // TODO translate in the direction of the airlock
             playerSpaceSuit.rigidbody.syncEntityToBody();
+            playerSpaceSuit.spaceship = this.entity;
+
             playerSpaceSuit.enabled = true;
+            this.isOccupied = false;
         }
 
     };
