@@ -58,6 +58,11 @@ pc.script.create('player', function (context) {
                 this.stopThrusting();
             }
 
+            // Launch spacesuit
+            if (context.keyboard.isPressed(pc.input.KEY_L)) {
+                this.launch();
+            }
+
             if (context.keyboard.isPressed(pc.input.KEY_R)) {
                 this.reset();
             }
@@ -115,7 +120,20 @@ pc.script.create('player', function (context) {
             //if (result.other.getName().startsWith('Asteroid')) {
                 //this.explode();
             //}
+        },
+
+        launch: function () {
+            var template = context.root.findByName('SpaceSuitTemplate');
+
+            var playerSpaceSuit = template.clone();
+            context.root.addChild(playerSpaceSuit);
+            playerSpaceSuit.setName("PlayerSpaceSuit");
+            playerSpaceSuit.setLocalPosition(this.entity.getLocalPosition());
+            playerSpaceSuit.translate(0, 2, 0); // TODO translate in the direction of the airlock
+            playerSpaceSuit.rigidbody.syncEntityToBody();
+            playerSpaceSuit.enabled = true;
         }
+
     };
 
     return Player;

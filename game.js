@@ -10,7 +10,7 @@ pc.script.create('game', function (context) {
         // Called once after all resources are loaded and before the first update
         initialize: function () {
             this.asteroidTemplate = this.entity.findByName('AsteroidTemplate');
-            this.asteroidTemplate.enabled = false;
+            //this.asteroidTemplate.enabled = false;
             
             /*for (var i=0; i<5; i++) {
                 //pc.math.random(min, max)
