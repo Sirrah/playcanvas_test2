@@ -1,13 +1,10 @@
-//pc.script.attribute("thrust", "number", 35);
-//pc.script.attribute("torque", "number", 2);
+pc.script.attribute("thrust", "number", 35);
+pc.script.attribute("torque", "number", 2);
 
 pc.script.create('player', function (context) {
     var Player = function (entity) {
         this.entity = entity;
         this.thrustVec = new pc.Vec3();
-
-        this.thrust = 35;
-        this.torque = 2;
 
         this.flame = null;
         this.light = null;
@@ -55,7 +52,7 @@ pc.script.create('player', function (context) {
                 this.entity.rigidbody.applyTorqueImpulse(0, 0, -this.torque);
             }
 
-            if (context.keyboard.isPressed(pc.input.KEY_P)) {
+            if (context.keyboard.isPressed(pc.input.KEY_UP)) {
                 this.startThrusting();
             } else {
                 this.stopThrusting();
@@ -67,10 +64,8 @@ pc.script.create('player', function (context) {
         },
 
         startThrusting: function () {
-            //pc.math.vec3.scale(this.entity.up, THRUST_IMPULSE, this.thrust);
             this.thrustVec.copy(this.entity.up).scale(this.thrust);
-            this.entity.rigidbody.activate();
-            this.entity.rigidbody.applyImpulse(this.thrust);
+            this.entity.rigidbody.applyImpulse(this.thrustVec);
 
             if (!this.thrusting) {
                 this.thrusting = true;
