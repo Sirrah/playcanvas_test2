@@ -1,32 +1,38 @@
 pc.script.create('game', function (context) {
-    // Creates a new Game instance
     var Game = function (entity) {
-        this.entity = entity;
-        
-        this.asteroidTemplate = null;
+        this.root = entity;
+        this.counter = 0;
+
+        this.templates = null;
     };
 
     Game.prototype = {
-        // Called once after all resources are loaded and before the first update
-        initialize: function () {
-            this.asteroidTemplate = this.entity.findByName('AsteroidTemplate');
-            //this.asteroidTemplate.enabled = false;
-            
-            /*for (var i=0; i<5; i++) {
-                //pc.math.random(min, max)
-                var asteroid1 = this.asteroidTemplate.clone();
-                this.entity.getParent().addChild(asteroid1);
-                asteroid1.setName("Asteroid" + i);
-                asteroid1.setLocalPosition(15*i, 0 ,0);
-                asteroid1.setLocalEulerAngles(0, 10*i, 0);
-                asteroid1.rigidbody.syncEntityToBody();
-                asteroid1.enabled = true;
-            }*/
-        },
+      initialize: function () {
+        this.templates = this.root.findByName('Templates')
 
-        // Called every frame, dt is time in seconds since last update
-        update: function (dt) {
-        }
+        var planetTemplate = this.templates.findByName('Planet');
+        var planet = this.instantiateTemplate(planetTemplate, this.root);
+      },
+
+      getInstanceName: function (template) {
+        return template.getName() + '_' + this.counter++;
+      },
+
+      instantiateTemplate: function (template, parent) {
+        var entity = template.clone();
+        parent.addChild(entity);
+
+        entity.setName(this.getInstanceName(template));
+        entity.setLocalPosition(0, 0 ,0);
+        //entity.setLocalEulerAngles(0, 0, 0);
+        entity.rigidbody.syncEntityToBody();
+        entity.enabled = true;
+
+        return entity;
+      },
+
+      update: function (dt) {
+      }
     };
 
     return Game;
