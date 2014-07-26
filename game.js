@@ -1,17 +1,17 @@
 pc.script.create('game', function (context) {
     var Game = function (entity) {
-        this.root = entity;
-        this.counter = 0;
+        this.entity = entity;
 
+        this.counter = 0;
         this.templates = null;
     };
 
     Game.prototype = {
       initialize: function () {
-        this.templates = this.root.findByName('Templates')
+        this.templates = this.entity.findByName('Templates')
 
         var planetTemplate = this.templates.findByName('Planet');
-        var planet = this.instantiateTemplate(planetTemplate, this.root);
+        var planet = this.instantiateTemplate(planetTemplate, this.entity);
       },
 
       getInstanceName: function (template) {
@@ -19,16 +19,16 @@ pc.script.create('game', function (context) {
       },
 
       instantiateTemplate: function (template, parent) {
-        var entity = template.clone();
-        parent.addChild(entity);
+        var templateInstance = template.clone();
+        parent.addChild(templateInstance);
 
-        entity.setName(this.getInstanceName(template));
-        entity.setLocalPosition(0, 0 ,0);
-        //entity.setLocalEulerAngles(0, 0, 0);
-        entity.rigidbody.syncEntityToBody();
-        entity.enabled = true;
+        templateInstance.setName(this.getInstanceName(template));
+        templateInstance.setLocalPosition(0, 0 ,0);
+        //templateInstance.setLocalEulerAngles(0, 0, 0);
+        templateInstance.rigidbody.syncEntityToBody();
+        templateInstance.enabled = true;
 
-        return entity;
+        return templateInstance;
       },
 
       update: function (dt) {
