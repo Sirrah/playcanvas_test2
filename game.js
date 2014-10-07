@@ -8,7 +8,7 @@ pc.script.create('game', function (context) {
 
     Game.prototype = {
       initialize: function () {
-        this.templates = this.entity.findByName('Templates')
+        this.templates = this.entity.findByName('Templates');
 
         var planetTemplate = this.templates.findByName('Planet');
         var planet = this.instantiateTemplate(planetTemplate, this.entity);
